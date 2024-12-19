@@ -7,8 +7,9 @@ import BoughtList from "./components/BoughtList.jsx";
 import CartFooter from "./components/CartFooter.jsx";
 
 function App() {
-  const apiUrl = "http://localhost:3000/shoplist";
   //  서버로부터 API 호출해서 쇼핑 목록 받아오기
+  const apiUrl = "http://localhost:3000/shoplist";
+
   // const [itemList, setItemList] = useState([
   //   { id: 1, name: "무", isBought: false },
   //   { id: 2, name: "배추", isBought: false },
