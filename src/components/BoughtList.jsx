@@ -1,4 +1,4 @@
-function BoughtList({ items }) {
+function BoughtList({ items, toggleBought }) {
   return (
     <div>
       <h2>산 물건들</h2>
@@ -6,7 +6,7 @@ function BoughtList({ items }) {
         {items.map((item) => (
           <li key={item.id}>
             {item.name}
-            <button>취소</button>
+            <button onClick={() => toggleBought(item.id)}>취소</button>
           </li>
         ))}
       </ul>

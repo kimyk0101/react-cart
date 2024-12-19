@@ -13,9 +13,29 @@ function App() {
     { id: 4, name: "고춧가루", isBought: false },
   ]);
 
+  //  산 물건 보기 여부를 체크할 state
+  const [showBoughtItems, setShowBoughtItems] = useState(true);
+
   //  isBought === false인 것만 필터링
   const shopItems = itemList.filter((item) => !item.isBought); //  isBought가 false인 것들(!으로 논리값 뒤집기)
 
+  //  새 아이템 추가
+  const addNewItem = (name) => {
+    //  id 생성 -> id의 최댓값 +1
+    const newId =
+      itemList.length > 0
+        ? Math.max(...itemList.map((item) => item.id)) + 1
+        : 1;
+
+    //  객체 생성
+    //  ES6 -> 속성이 키 이름과 값 이름이 같을 때 줄여 쓸 수 있다
+    // name: name => name
+    const newItem = { id: newId, name, isBought: false };
+
+    //  itemList에 새 아이템 추가 (setItemList(newItemList))
+    const newItemList = [...itemList, newItem];
+    setItemList(newItemList);
+  };
   //  id -> isBought를 true <-> false
   const toggleBought = (id) => {
     const newItemList = itemList.map((item) =>
@@ -30,7 +50,9 @@ function App() {
     setItemList(newItemList);
   };
 
+  // isBought === true인 목록
   const boughtItems = itemList.filter((item) => item.isBought);
+
   return (
     <div>
       <CartHeader />
@@ -49,10 +71,18 @@ function App() {
           toggleBought={toggleBought}
           deleteItem={deleteItem}
         />
-        <CartInput />
-        <input type="checkbox" id="show-bougt-items" />
+        <CartInput addNewItem={addNewItem} />
+        <input
+          type="checkbox"
+          id="show-bougt-items"
+          checked={showBoughtItems}
+          onChange={(event) => setShowBoughtItems(event.target.checked)}
+        />
         <label>산 물건 보기</label>
-        <BoughtList items={boughtItems} />
+        {/* 선택적 랜더링 (if문 등 쓸 수 없음)*/}
+        {showBoughtItems && (
+          <BoughtList items={boughtItems} toggleBought={toggleBought} />
+        )}
       </main>
       <CartFooter />
     </div>
