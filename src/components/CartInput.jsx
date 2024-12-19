@@ -6,6 +6,8 @@ function CartInput({ addNewItem }) {
       <input
         type="text"
         value={inputValue}
+        // input으로 state값 변경하기 -> onChange 이벤트
+        // 사용자가 입력필드에 값을 변경할 때 (입력/삭제할때)마다 발생
         onChange={(event) => setInputValue(event.target.value)}
       />
       <button
