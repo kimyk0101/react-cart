@@ -8,7 +8,7 @@ import CartFooter from "./components/CartFooter.jsx";
 
 function App() {
   //  서버로부터 API 호출해서 쇼핑 목록 받아오기
-  const apiUrl = "http://localhost:3000/shoplist";
+  const apiUrl = "http://localhost:1337/shoplist";
 
   // const [itemList, setItemList] = useState([
   //   { id: 1, name: "무", isBought: false },
@@ -55,7 +55,8 @@ function App() {
   if (error) return <div>에러: {error}</div>;
 
   //  새 아이템 추가
-  const addNewItem = (name) => {
+  const addNewItem = async (name) => {
+    //  async가 있어야
     //  id 생성 -> id의 최댓값 +1
     const newId =
       itemList.length > 0
@@ -68,8 +69,28 @@ function App() {
     const newItem = { id: newId, name, isBought: false };
 
     //  itemList에 새 아이템 추가 (setItemList(newItemList))
-    const newItemList = [...itemList, newItem];
-    setItemList(newItemList);
+    // const newItemList = [...itemList, newItem];
+    // setItemList(newItemList);
+
+    //  -> REST 서버에 POST 호출 -> CREATE
+    try {
+      const response = await fetch(apiUrl, {
+        //  await가 호출(비동기 방식을 동기 방식으로 처리)
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json", //  전달받은 데이터의 데이터 타입 -> 기본형식/데이터 타입
+        },
+        body: JSON.stringify(newItem), //  문서로서의 JSON
+      });
+      //  요청 결과 확인
+      if (!response.ok) {
+        throw new Error("새 아이템을 추가하지 못했습니다.");
+      }
+      //  리스트 갱신
+      fetchItems();
+    } catch (err) {
+      setError(err.message);
+    }
   };
   //  id -> isBought를 true <-> false
   const toggleBought = (id) => {
