@@ -29,6 +29,9 @@ function App() {
   //  isBought === false인 것만 필터링
   const shopItems = itemList.filter((item) => !item.isBought); //  isBought가 false인 것들(!으로 논리값 뒤집기)
 
+  // isBought === true인 목록
+  const boughtItems = itemList.filter((item) => item.isBought);
+
   //  API에서 목록 받아오는 함수
   const fetchItems = async () => {
     try {
@@ -98,16 +101,33 @@ function App() {
       item.id === id ? { ...item, isBought: !item.isBought } : item
     );
     setItemList(newItemList);
+
+    //
+    // try {
+    //   const response = fetch()
+    // }
   };
 
   //  id -> item 삭제
-  const deleteItem = (id) => {
-    const newItemList = itemList.filter((item) => item.id !== id);
-    setItemList(newItemList);
-  };
+  const deleteItem = async (id) => {
+    // const newItemList = itemList.filter((item) => item.id !== id);
+    // setItemList(newItemList);
 
-  // isBought === true인 목록
-  const boughtItems = itemList.filter((item) => item.isBought);
+    //  DELETE method로 요청
+    try {
+      const response = await fetch(`${apiUrl}/${id}`, {
+        method: "DELETE",
+      });
+      if (!response.ok) {
+        throw new Error("아이템을 삭제하지 못했습니다.");
+      }
+      //  목록 갱신
+      fetchItems();
+    } catch (err) {
+      console.error(err);
+      setError(err.message);
+    }
+  };
 
   return (
     <div>
