@@ -96,16 +96,36 @@ function App() {
     }
   };
   //  id -> isBought를 true <-> false
-  const toggleBought = (id) => {
+  const toggleBought = async (id) => {
+    /*
     const newItemList = itemList.map((item) =>
       item.id === id ? { ...item, isBought: !item.isBought } : item
     );
     setItemList(newItemList);
+    */
 
-    //
-    // try {
-    //   const response = fetch()
-    // }
+    //  id로 아이템을 찾아서
+    //  해당 아이템의 isBought 값을 반전 true <-> false
+    const updatedItem = itemList.find((item) => item.id === id);
+    updatedItem.isBought = !updatedItem.isBought;
+
+    //  서버에 UPDATE 요청 전송
+    try {
+      const response = await fetch(`${apiUrl}/${id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(updatedItem),
+      });
+      if (!response.ok) {
+        throw new Error("데이터를 수정하지 못했습니다.");
+      }
+      fetchItems();
+    } catch (err) {
+      console.error(err);
+      setError(err.message);
+    }
   };
 
   //  id -> item 삭제
