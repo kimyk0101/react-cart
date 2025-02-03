@@ -1,14 +1,16 @@
 {
-  "shoplist": [
+  "PhonebookList": [
     {
       "id": "1",
-      "name": "무",
-      "isBought": false
+      "name": "홍길동",
+      "hp": "010-1234-5678",
+      "tel": "02-987-6541"
     },
     {
       "id": "2",
-      "name": "배추",
-      "isBought": true
+      "name": "장길산",
+      "hp": "010-2345-6789",
+      "tel": "02-876-5432"
     }
   ]
 }
